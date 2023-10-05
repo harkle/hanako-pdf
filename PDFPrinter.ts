@@ -27,7 +27,7 @@ export class PDFPrinter {
 
   /*
    * Draw a text
-   */ 
+   */
   public static text(element: PDFElement, x: number, y: number, altText?: string, options?: any) {
     const fontSize = parseFloat(element.element.css('font-size')) / HanakoPDF.fontScaleFactor;
     const fontOffset = fontSize * 0.03528;
@@ -36,11 +36,29 @@ export class PDFPrinter {
     //this.jsPDF.setCharSpace(-0.02);
     //this.jsPDF.setLineHeightFactor(1.2);
 
-    const textWidth = element.width - element.padding.x;
-    const textHeight = element.height - element.padding.y;
+    const textWidth = element.width - element.padding.right  - element.padding.left;
+    const textHeight = element.height - element.padding.top  - element.padding.bottom;
 
     const text = altText ? altText : this.jsPDF.splitTextToSize(element.element.get(0).innerText, textWidth);
+
+    if (text !== '') {
+      if (HanakoPDF.debug) PDFPrinter.rectangle(x + element.padding.left, y + element.padding.top, textWidth, textHeight, '#ff9900');
+      this.jsPDF.text(text, x + element.padding.left, y + element.padding.top + fontOffset, options);
+    }
+  }
+
+  /*
+   * Draw a rectangle
+   */
+  public static rectangle(x: number, y: number, width: number, height: number, strokeColor: string = '#0000', lineWidth: number = 0.025, fillColor?: string) {
+    this.jsPDF.setDrawColor(strokeColor);
+    this.jsPDF.setLineWidth(lineWidth);
     
-    if (text !== '') this.jsPDF.text(text, x + element.padding.left, y + element.padding.top + fontOffset, options);
+    if (fillColor) this.jsPDF.setFillColor(fillColor);
+
+    let style = 'S';
+    if (fillColor) style = 'FD';
+
+    this.jsPDF.rect(x, y, width, height, style);
   }
 }

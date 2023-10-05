@@ -17,7 +17,7 @@ type PageNumberPosition = {
 export class HanakoPDF {
   private static hasBeenInitialized: boolean = false;
   private static currentPageTop: number = 0;
-  private static debug: boolean = false;
+  private static _debug: boolean = false;
   private static displayMode: string;
   private static fonts: Fonts = {};
   private static jsPDF: jsPDF;
@@ -52,7 +52,7 @@ export class HanakoPDF {
     }
 
     // Retrieve debug mode
-    this.debug = this.getPageDataAttribute('debug') === 'true';
+    this._debug = this.getPageDataAttribute('debug') === 'true';
 
     // Retrieve output element
     this.outputElement = $(this.getPageDataAttribute('output'));
@@ -128,7 +128,6 @@ export class HanakoPDF {
 
     // Count pages
     this.transverse(null, () => {
-      console.log('c pageBreak');
       this._pageCount++;
     });
 
@@ -157,6 +156,13 @@ export class HanakoPDF {
    */
   private static getPageDataAttribute(key: string, defaultValue: string = undefined) {
     return this.page.data(key) !== undefined ? this.page.data(key) : defaultValue;
+  }
+
+  /*
+   * Get debug
+   */
+  public static get debug() {
+    return this._debug;
   }
 
   /*
@@ -254,7 +260,6 @@ export class HanakoPDF {
    * Add a new page
    */
   private static pageBreak(element: Collection) {
-    console.log('pageBreak');
     // Add a new page
     this.jsPDF.addPage();
 

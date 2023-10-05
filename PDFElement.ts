@@ -51,9 +51,7 @@ export class PDFElement {
       top: parseFloat(this._element.css('padding-top')) * HanakoPDF.scaleFactor,
       right: parseFloat(this._element.css('padding-right')) * HanakoPDF.scaleFactor,
       bottom: parseFloat(this._element.css('padding-bottom')) * HanakoPDF.scaleFactor,
-      left: parseFloat(this._element.css('padding-left')) * HanakoPDF.scaleFactor,
-      x: parseFloat((this._element.css('padding-left')) + parseFloat(this._element.css('padding-right'))) * HanakoPDF.scaleFactor,
-      y: parseFloat((this._element.css('padding-top')) + parseFloat(this._element.css('padding-bottom'))) * HanakoPDF.scaleFactor,
+      left: parseFloat(this._element.css('padding-left')) * HanakoPDF.scaleFactor
     }
   }
 
