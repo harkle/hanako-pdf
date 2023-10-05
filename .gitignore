@@ -8,4 +8,7 @@ node_modules
 *.sql
 *.sqlite
 
+fonts/DMSans-Regular.b64
+fonts/DMSans-Medium.b64
+
 dist
