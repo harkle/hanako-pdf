@@ -2,29 +2,42 @@ import { $ } from 'hanako-ts/dist-legacy/Framework';
 import { Collection } from "hanako-ts/dist-legacy/Collection";
 import { jsPDF, jsPDFOptions } from 'jspdf';
 import { PDFElement } from './PDFElement';
+import { PDFPrinter } from './PDFPrinter';
 
 type Fonts = {
   [key: string]: string;
 };
 
+type PageNumberPosition = {
+  x: number;
+  y: number;
+  align: string;
+};
+
 export class HanakoPDF {
   private static hasBeenInitialized: boolean = false;
+  private static currentPageTop: number = 0;
   private static debug: boolean = false;
+  private static displayMode: string;
   private static fonts: Fonts = {};
   private static jsPDF: jsPDF;
   private static outputElement: Collection;
-  private static pageCount: number = 1;
+  private static _pageCount: number = 1;
+  private static _currentPage: number = 1;
   private static _page: Collection;
-  private static _scaleFactor: number;
-  private static _yReference: number = 0;
+  private static _pageTop: number = 0;
   private static _pageBottom: number = 0;
+  private static _pageNumberPosition: PageNumberPosition;
+  private static _scaleFactor: number;
+  private static _fontScaleFactor: number = 1.5;
+  private static _yReference: number = 0;
 
   /*
    * Init & load fonts from server
    */
   public static async init() {
-    let path = this.page.data('path');
-    let fonts = this.page.data('fonts');
+    let path = this.getPageDataAttribute('path');
+    let fonts = this.getPageDataAttribute('fonts');
 
     // Output an error if path is empty
     if (path === '' || path === undefined) {
@@ -39,13 +52,29 @@ export class HanakoPDF {
     }
 
     // Retrieve debug mode
-    this.debug = this.page.data('debug') === 'true';
+    this.debug = this.getPageDataAttribute('debug') === 'true';
 
     // Retrieve output element
-    this.outputElement = $(this.page.data('output'));
+    this.outputElement = $(this.getPageDataAttribute('output'));
 
-    // Retrieve debug mode
-    this._pageBottom = this.page.data('pageBottom') ? parseFloat(this.page.data('pageBottom')) : 29.7;
+    // Retrieve page top
+    this._pageTop = parseFloat(this.getPageDataAttribute('pageTop', '0'));
+
+    // Retrieve page bottom
+    this._pageBottom = parseFloat(this.getPageDataAttribute('pageBottom', '29.7'));
+
+    // Retrieve display mode
+    this.displayMode = this.getPageDataAttribute('displayMode', 'fullheight');
+
+    // Retrieve font scale factor
+    this._fontScaleFactor = parseFloat(this.getPageDataAttribute('fontScaleFactor', '1.5'));
+
+    // Retrieve page number position
+    this._pageNumberPosition = {
+      x: parseFloat(this.getPageDataAttribute('pageNumberX', '10.5')),
+      y: parseFloat(this.getPageDataAttribute('pageNumberY', '28.5')),
+      align: this.getPageDataAttribute('pageNumberAlign', 'center')
+    };
 
     // Load fonts
     await Promise.all(fonts.split(',').map(async (fontName: string) => {
@@ -79,11 +108,38 @@ export class HanakoPDF {
       ...jsPDFOptions
     });
 
+    // Set display mode
+    this.jsPDF.setDisplayMode(this.displayMode);
+
+    // Add fonts to VFS
+    for (let fontName in this.fonts) {
+      this.jsPDF.addFileToVFS(fontName + '.ttf', this.fonts[fontName]);
+      this.jsPDF.addFont(fontName + '.ttf', fontName, 'normal');
+    }
+
+    // Set default font
+    this.jsPDF.setFont(this.fonts[0]);
+
     // Add "print" class to PDF element (enable specific CSS rules for PDF)
     page.addClass('print');
 
-    this.countPages();
-    this.transverse();
+    // Setup PDFPrinter
+    PDFPrinter.init(this.jsPDF);
+
+    // Count pages
+    this.transverse(null, () => {
+      console.log('c pageBreak');
+      this._pageCount++;
+    });
+
+    PDFPrinter.pageNumber();
+
+    // Transverse page elements
+    this.transverse((element: PDFElement) => {
+      this.printElement(element);
+    }, (element: Collection) => {
+      this.pageBreak(element);
+    });
 
     // Remove "print" class to PDF element
     page.removeClass('print');
@@ -94,6 +150,13 @@ export class HanakoPDF {
     } else {
       this.jsPDF.save((page.data('filename') ? page.data('filename') : 'please_set_a_filename') + '.pdf');
     }
+  }
+
+  /*
+   * Return page data attribute
+   */
+  private static getPageDataAttribute(key: string, defaultValue: string = undefined) {
+    return this.page.data(key) !== undefined ? this.page.data(key) : defaultValue;
   }
 
   /*
@@ -127,35 +190,78 @@ export class HanakoPDF {
   }
 
   /*
-   * Transverse element and count pages
+   * Get current page number
    */
-  private static countPages() {
-    // Reset y reference
-    this._yReference = 0;
+  public static get currentPage() {
+    return this._currentPage;
+  }
 
-    // Transverse elements
+  /*
+   * Get page count
+   */
+  public static get pageCount() {
+    return this._pageCount;
+  }
+
+  /*
+   * Get page number parameters
+   */
+  public static get pageNumberPosition() {
+    return this._pageNumberPosition;
+  }
+
+  /*
+   * Get page number parameters
+   */
+  public static get fontScaleFactor() {
+    return this._fontScaleFactor;
+  }
+
+  /*
+   * Transverse elements
+   */
+  private static transverse(callback: Function, pageBreakCallback?: Function) {
+    // Reset some values
+    this.currentPageTop = 0;
+    this._yReference = 0;
+    this._currentPage = 1;
+
     this.page.find('.hp-export').each((element: Collection) => {
       const pdfElement = new PDFElement(element);
 
-      // Skip excluded elements
-      if (pdfElement.isExcluded()) return;
-
       // Check if element is below page limit
       if (pdfElement.checkPageBreak()) {
+        // Update some references
+        this.currentPageTop = this._pageTop;
+
         this._yReference = element.position(this.page).y;
 
-        this.pageCount++;
+        if (pageBreakCallback) pageBreakCallback(element);
       }
+
+      if (callback) callback(pdfElement);
     });
   }
 
-  private static transverse() {
-    console.log('hanako-pdf: transverse');
-    console.log('hanako-pdf: page count: ' + this.pageCount);
+  /*
+   * Print element to PDF
+   */
+  private static printElement(element: PDFElement) {
+    if (element.element.text() !== '') PDFPrinter.text(element, element.x, element.y);
+  }
 
-    // Transverse elements
-    this.page.find('.hp-export').each((element: Collection) => {
-      console.log('hanako-pdf: transverse element', element);
-    });
+  /*
+   * Add a new page
+   */
+  private static pageBreak(element: Collection) {
+    console.log('pageBreak');
+    // Add a new page
+    this.jsPDF.addPage();
+
+    // Update page number
+    this._currentPage++;
+
+    // Print page number to PDF
+    PDFPrinter.pageNumber();
   }
 }
