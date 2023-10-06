@@ -259,6 +259,37 @@ export class HanakoPDF {
     // Draw background
     if (element.element.css('background-color') !== 'rgba(0, 0, 0, 0)') PDFPrinter.rectangle(element.x, this._pageTop + element.y, element.width, element.height, element.element.css('background-color'), 0, element.element.css('background-color'));
 
+    // Draw border
+    ['border-top', 'border-right', 'border-bottom', 'border-left'].forEach((border: string) => {
+      const borderData = element.element.css(border);
+      const borderSize = parseFloat(borderData.substring(0, borderData.indexOf('px')));
+      const borderStyle = borderData.substring(borderData.indexOf('px') + 2, borderData.indexOf('rgb')).trim();
+      const borderColor = borderData.substring(borderData.indexOf('rgb'), borderData.length);
+
+      let lineCoordinates = {
+        x1: element.x,
+        y1: this._pageTop + element.y,
+        x2: element.x + element.width,
+        y2: this._pageTop + element.y
+      };
+
+      if (border === 'border-right') {
+        lineCoordinates.x1 = lineCoordinates.x2 = element.x + element.width;
+        lineCoordinates.y2 = this._pageTop + element.y + element.height;
+      }
+
+      if (border === 'border-bottom') {
+        lineCoordinates.y1 = lineCoordinates.y2 = this._pageTop + element.y + element.height;
+      }
+
+      if (border === 'border-left') {
+          lineCoordinates.x2 = lineCoordinates.x1;
+          lineCoordinates.y2 = this._pageTop + element.y + element.height;
+      }
+
+      if (borderSize > 0 && borderStyle !=  'none') PDFPrinter.line(lineCoordinates.x1, lineCoordinates.y1, lineCoordinates.x2, lineCoordinates.y2, borderColor, borderSize * this.scaleFactor);
+    });
+
     // Output text
     if (element.element.text() !== '' && element.element.find('.hp-export').length === 0) PDFPrinter.text(element, element.x, this._pageTop + element.y);
   }

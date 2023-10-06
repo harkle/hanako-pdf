@@ -43,7 +43,7 @@ export class PDFPrinter {
 
     // Font color
     const fontColor = element.element.css('color');
-    this.jsPDF.setTextColor(rgb2hex(fontColor));
+    this.jsPDF.setTextColor(fontColor);
 
     //this.jsPDF.setCharSpace(-0.02);
     //this.jsPDF.setLineHeightFactor(1.2);

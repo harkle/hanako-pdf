@@ -22,11 +22,9 @@ HanakoPDF.print(hanakoCollectionElement, options?);
 https://www.giftofspeed.com/base64-encoder/
 
 ## Todo
-- border
-- background color
-- image
 - line height
 - letter spacing
+- image
 - page break
 - ul
 - ol
