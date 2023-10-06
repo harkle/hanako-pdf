@@ -243,7 +243,6 @@ export class HanakoPDF {
       if (pdfElement.checkPageBreak()) {
         // Update some references
         this.currentPageTop = this._pageTop;
-
         this._yReference = element.position(this.page).y;
 
         if (pageBreakCallback) pageBreakCallback(element);
@@ -258,10 +257,10 @@ export class HanakoPDF {
    */
   private static printElement(element: PDFElement) {
     // Draw background
-    if (element.element.css('background-color') !== 'rgba(0, 0, 0, 0)') PDFPrinter.rectangle(element.x, element.y, element.width, element.height, element.element.css('background-color'), 0, element.element.css('background-color'));
+    if (element.element.css('background-color') !== 'rgba(0, 0, 0, 0)') PDFPrinter.rectangle(element.x, this._pageTop + element.y, element.width, element.height, element.element.css('background-color'), 0, element.element.css('background-color'));
 
     // Output text
-    if (element.element.text() !== '' && element.element.find('.hp-export').length === 0) PDFPrinter.text(element, element.x, element.y);
+    if (element.element.text() !== '' && element.element.find('.hp-export').length === 0) PDFPrinter.text(element, element.x, this._pageTop + element.y);
   }
 
   /*
