@@ -73,6 +73,15 @@ export class PDFPrinter {
 
     this.jsPDF.rect(x, y, width, height, style);
   }
+
+  /*
+   * Draw a line
+   */
+  public static line(x1: number, y1: number, x2: number, y2: number, color: string = '#0000', lineWidth: number = 0.025) {
+    this.jsPDF.setDrawColor(color);
+    this.jsPDF.setLineWidth(lineWidth);
+    this.jsPDF.line(x1, y1, x2, y2);
+  }
 }
 
 /*

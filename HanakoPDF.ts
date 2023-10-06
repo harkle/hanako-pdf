@@ -257,7 +257,11 @@ export class HanakoPDF {
    * Print element to PDF
    */
   private static printElement(element: PDFElement) {
-    if (element.element.text() !== '') PDFPrinter.text(element, element.x, element.y);
+    // Draw background
+    if (element.element.css('background-color') !== 'rgba(0, 0, 0, 0)') PDFPrinter.rectangle(element.x, element.y, element.width, element.height, element.element.css('background-color'), 0, element.element.css('background-color'));
+
+    // Output text
+    if (element.element.text() !== '' && element.element.find('.hp-export').length === 0) PDFPrinter.text(element, element.x, element.y);
   }
 
   /*
