@@ -41,6 +41,10 @@ export class PDFPrinter {
     const fontOffset = fontSize * 0.03528;
     this.jsPDF.setFontSize(fontSize);
 
+    // Font color
+    const fontColor = element.element.css('color');
+    this.jsPDF.setTextColor(rgb2hex(fontColor));
+
     //this.jsPDF.setCharSpace(-0.02);
     //this.jsPDF.setLineHeightFactor(1.2);
 
@@ -69,4 +73,21 @@ export class PDFPrinter {
 
     this.jsPDF.rect(x, y, width, height, style);
   }
+}
+
+/*
+ * Convert background-color to hex
+ */
+function rgb2hex(rgb: string) {
+  if (/^#[0-9A-F]{6}$/i.test(rgb)) return '#000000';
+
+  const rgbParts: string[] = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+
+  if (rgbParts == null) return '#000000';
+
+  function hex(value: string) {
+    return ('0' + parseInt(value).toString(16)).slice(-2);
+  }
+
+  return '#' + hex(rgbParts[1]) + hex(rgbParts[2]) + hex(rgbParts[3]);
 }
