@@ -29,10 +29,18 @@ export class PDFPrinter {
    * Draw a text
    */
   public static text(element: PDFElement, x: number, y: number, altText?: string, options?: any) {
+    // Font familiy, weight and style
+    const fontFamiliy = element.element.css('font-family').replace(/"/g, '').replace(/'/g, '').split(',')[0].trim();
+    const fontWeight = element.element.css('font-weight');
+    const fontStyle= element.element.css('font-style');
+
+    this.jsPDF.setFont(fontFamiliy + ' ' + fontWeight + ' ' + fontStyle);
+
+    // Font size
     const fontSize = parseFloat(element.element.css('font-size')) / HanakoPDF.fontScaleFactor;
     const fontOffset = fontSize * 0.03528;
-
     this.jsPDF.setFontSize(fontSize);
+
     //this.jsPDF.setCharSpace(-0.02);
     //this.jsPDF.setLineHeightFactor(1.2);
 

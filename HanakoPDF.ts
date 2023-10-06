@@ -4,6 +4,11 @@ import { jsPDF, jsPDFOptions } from 'jspdf';
 import { PDFElement } from './PDFElement';
 import { PDFPrinter } from './PDFPrinter';
 
+type FontConfig = {
+  key: string;
+  file: string;
+};
+
 type Fonts = {
   [key: string]: string;
 };
@@ -36,19 +41,12 @@ export class HanakoPDF {
    * Init & load fonts from server
    */
   public static async init() {
-    let path = this.getPageDataAttribute('path');
-    let fonts = this.getPageDataAttribute('fonts');
+    let fontPath = this.getPageDataAttribute('fontPath');
 
     // Output an error if path is empty
-    if (path === '' || path === undefined) {
+    if (fontPath === '' || fontPath === undefined) {
       console.error('hanako-pdf: path is empty');
-      return;
-    }
-
-    // Output an error if fonts list is empty
-    if (fonts === '' || fonts === undefined) {
-      console.error('hanako-pdf: font list is empty');
-      return;
+      return false;
     }
 
     // Retrieve debug mode
@@ -77,16 +75,21 @@ export class HanakoPDF {
     };
 
     // Load fonts
-    await Promise.all(fonts.split(',').map(async (fontName: string) => {
-      var font: string = await $.httpRequest({
-        url: path + '/' + fontName + '.b64',
+    const fontConfigs: FontConfig[] = await $.httpRequest({
+      url: fontPath + '/fonts.json',
+      dataType: 'json'
+    });
+
+    await Promise.all(fontConfigs.map(async (fontConfig: FontConfig, index: number) => {
+      const fontData: string = await $.httpRequest({
+        url: fontPath + '/' + fontConfig.file,
         dataType: 'text'
       });
 
-      this.fonts[fontName] = font;
+      this.fonts[fontConfig.key] = fontData;
     }));
 
-    this.hasBeenInitialized = true;
+    return this.hasBeenInitialized = true;
   }
 
   /*
@@ -97,6 +100,7 @@ export class HanakoPDF {
 
     // Load fonts if not already loaded
     if (!this.hasBeenInitialized) await this.init();
+    if (!this.hasBeenInitialized) return false;
 
     // Initialize jsPDF
     this.jsPDF = new jsPDF({

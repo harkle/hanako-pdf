@@ -1,0 +1,14 @@
+[
+  {
+    "key": "DM Sans 400 normal",
+    "file": "DMSans-Regular.b64"
+  },
+  {
+    "key": "DM Sans 400 italic",
+    "file": "DMSans-Regular-Italic.b64"
+  },
+  {
+    "key": "DM Sans 700 normal",
+    "file": "DMSans-Bold.b64"
+  }
+]
