@@ -21,11 +21,15 @@ HanakoPDF.print(hanakoCollectionElement, options?);
 
 https://www.giftofspeed.com/base64-encoder/
 
-## Todo
-- line height
+## Not supported
+
+These features are not support because they are causing issues with the PDF rendering.
+
 - letter spacing
+
+
+## Todo
 - image
-- page break
 - ul
 - ol
 - nested styles (em, strong, sup, etc.)

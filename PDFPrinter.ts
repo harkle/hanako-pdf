@@ -45,6 +45,10 @@ export class PDFPrinter {
     const lineHeight = parseFloat(element.element.css('line-height')) / parseFloat(element.element.css('font-size'));
     this.jsPDF.setLineHeightFactor(lineHeight);
 
+    // Letter spacing
+    /*const letterSpacing = parseFloat(element.element.css('letter-spacing')) / parseFloat(element.element.css('font-size')) / 10;
+    if (!isNaN(letterSpacing)) this.jsPDF.setCharSpace(letterSpacing);*/
+
     // Font color
     const fontColor = element.element.css('color');
     this.jsPDF.setTextColor(fontColor);
