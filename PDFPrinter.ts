@@ -83,20 +83,3 @@ export class PDFPrinter {
     this.jsPDF.line(x1, y1, x2, y2);
   }
 }
-
-/*
- * Convert background-color to hex
- */
-function rgb2hex(rgb: string) {
-  if (/^#[0-9A-F]{6}$/i.test(rgb)) return '#000000';
-
-  const rgbParts: string[] = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-
-  if (rgbParts == null) return '#000000';
-
-  function hex(value: string) {
-    return ('0' + parseInt(value).toString(16)).slice(-2);
-  }
-
-  return '#' + hex(rgbParts[1]) + hex(rgbParts[2]) + hex(rgbParts[3]);
-}

@@ -66,7 +66,7 @@ export class PDFElement {
    * Return if element is below page bottom
    */
   public checkPageBreak() {
-    return this.y + this.height > HanakoPDF.pageBottom || this.getGroupLimt() > HanakoPDF.pageBottom || this._element.hasClass('export-page-break');
+    return this.y + this.height > HanakoPDF.pageBottom || this.getGroupLimt() > HanakoPDF.pageBottom || this._element.hasClass('hp-page-break');
   }
 
   /*
