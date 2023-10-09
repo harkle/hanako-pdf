@@ -29,3 +29,4 @@ https://www.giftofspeed.com/base64-encoder/
 - ul
 - ol
 - nested styles (em, strong, sup, etc.)
+- page numbering format

@@ -41,6 +41,10 @@ export class PDFPrinter {
     const fontOffset = fontSize * 0.03528;
     this.jsPDF.setFontSize(fontSize);
 
+    // Line height
+    const lineHeight = parseFloat(element.element.css('line-height')) / parseFloat(element.element.css('font-size'));
+    this.jsPDF.setLineHeightFactor(lineHeight);
+
     // Font color
     const fontColor = element.element.css('color');
     this.jsPDF.setTextColor(fontColor);
