@@ -29,7 +29,6 @@ These features are not support because they are causing issues with the PDF rend
 
 
 ## Todo
-- image
 - ul
 - ol
 - nested styles (em, strong, sup, etc.)

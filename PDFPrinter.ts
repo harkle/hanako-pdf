@@ -32,7 +32,7 @@ export class PDFPrinter {
     // Font familiy, weight and style
     const fontFamiliy = element.element.css('font-family').replace(/"/g, '').replace(/'/g, '').split(',')[0].trim();
     const fontWeight = element.element.css('font-weight');
-    const fontStyle= element.element.css('font-style');
+    const fontStyle = element.element.css('font-style');
 
     this.jsPDF.setFont(fontFamiliy + ' ' + fontWeight + ' ' + fontStyle);
 
@@ -56,8 +56,8 @@ export class PDFPrinter {
     //this.jsPDF.setCharSpace(-0.02);
     //this.jsPDF.setLineHeightFactor(1.2);
 
-    const textWidth = element.width - element.padding.right  - element.padding.left;
-    const textHeight = element.height - element.padding.top  - element.padding.bottom;
+    const textWidth = element.width - element.padding.right - element.padding.left;
+    const textHeight = element.height - element.padding.top - element.padding.bottom;
 
     const text = altText ? altText : this.jsPDF.splitTextToSize(element.element.get(0).innerText, textWidth);
 
@@ -73,7 +73,7 @@ export class PDFPrinter {
   public static rectangle(x: number, y: number, width: number, height: number, strokeColor: string = '#0000', lineWidth: number = 0.025, fillColor?: string) {
     this.jsPDF.setDrawColor(strokeColor);
     this.jsPDF.setLineWidth(lineWidth);
-    
+
     if (fillColor) this.jsPDF.setFillColor(fillColor);
 
     let style = 'S';
@@ -89,5 +89,74 @@ export class PDFPrinter {
     this.jsPDF.setDrawColor(color);
     this.jsPDF.setLineWidth(lineWidth);
     this.jsPDF.line(x1, y1, x2, y2);
+  }
+
+  /*
+   * Draw an image
+    */
+  public static image(element: PDFElement, x: number, y: number) {
+    if (HanakoPDF.debug) this.rectangle(x, y, element.width, element.height, '#ff00ff');
+
+    const isCanvas = element.element.get(0).tagName === 'CANVAS';
+
+    let src = element.element.attr('src');
+    if (!src && !isCanvas) return;
+    if (!src) src = '';
+    
+    const format = src.split('.').pop() === 'jpg' ? 'jpeg' : 'png';
+
+    if (src.indexOf(location.hostname) === -1 && !isCanvas) {
+      console.log('external image skipped')
+    } else {
+      const image = isCanvas ? element.element.get(0) : this.imageToCanvas(element);
+      this.jsPDF.addImage(image, format, x, y, element.element.width() * HanakoPDF.scaleFactor, element.element.height() * HanakoPDF.scaleFactor);
+    }
+  }
+
+  /*
+   * Background image to canvas
+   */
+  public static backgroundImageToCanvas(element: PDFElement): HTMLCanvasElement {
+    const canvas = document.createElement('canvas');
+    const image = element.element.css('background-image').replace('url("', '').replace('")', '');
+    canvas.width = element.element.width() * 2;
+    canvas.height = element.element.height() * 2;
+
+    const context = canvas.getContext('2d');
+
+    context.scale(2, 2);
+
+    if (element.element.css('background-color') !== 'rgba(0, 0, 0, 0)') {
+      context.fillStyle = element.element.css('background-color');
+      context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    const img = new Image();
+    img.src = image;
+    context.drawImage(img, 0, 0, element.element.width(), element.element.height());
+
+    return canvas;
+  }
+  /*
+   * Transform image to canvas
+   */
+  public static imageToCanvas(element: PDFElement): HTMLCanvasElement {
+    const canvas = document.createElement('canvas');
+    const image = element.element.get(0);
+    canvas.width = image.width * 2;
+    canvas.height = image.height * 2;
+
+    const context = canvas.getContext('2d');
+
+    context.scale(2, 2);
+
+    if (element.element.css('background-color') !== 'rgba(0, 0, 0, 0)') {
+      context.fillStyle = element.element.css('background-color');
+      context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    context.drawImage(image, 0, 0, image.width, image.height);
+
+    return canvas;
   }
 }

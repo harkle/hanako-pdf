@@ -290,6 +290,9 @@ export class HanakoPDF {
       if (borderSize > 0 && borderStyle !=  'none') PDFPrinter.line(lineCoordinates.x1, lineCoordinates.y1, lineCoordinates.x2, lineCoordinates.y2, borderColor, borderSize * this.scaleFactor);
     });
 
+    // Draw image
+    if (['CANVAS', 'IMG'].includes(element.element.get(0).tagName) || element.element.css('background-image') !== 'none') PDFPrinter.image(element, element.x, this._pageTop + element.y);
+
     // Output text
     if (element.element.text() !== '' && element.element.find('.hp-export').length === 0) PDFPrinter.text(element, element.x, this._pageTop + element.y);
   }
