@@ -18,7 +18,7 @@ export declare type HanakoPDFOptions = {
     fontScaleFactorFix?: number;
     debug?: boolean;
 };
-export declare type PrintElementallback = (element: PDFElement, pageTop: number) => void;
+export declare type PrintElementCallback = (element: PDFElement, pageTop: number) => void;
 export declare class HanakoPDF {
     private static currentPageTop;
     private static displayMode;
@@ -42,7 +42,7 @@ export declare class HanakoPDF {
     private static _scaleFactor;
     private static _yReference;
     static init(options: HanakoPDFOptions): Promise<boolean>;
-    static print(page: Collection, options: HanakoPDFOptions, target?: Collection, printElementallback?: PrintElementallback, jsPDFOptions?: jsPDFOptions): Promise<boolean>;
+    static print(page: Collection, options: HanakoPDFOptions, target?: Collection, printElementCallback?: PrintElementCallback, jsPDFOptions?: jsPDFOptions): Promise<boolean>;
     static get debug(): boolean;
     static get page(): Collection;
     static get scaleFactor(): number;

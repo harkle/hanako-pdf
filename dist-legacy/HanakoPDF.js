@@ -54,10 +54,10 @@ export class HanakoPDF {
     /*
      * Export PDF
      */
-    static print(page, options, target, printElementallback, jsPDFOptions) {
+    static print(page, options, target, printElementCallback, jsPDFOptions) {
         return __awaiter(this, void 0, void 0, function* () {
             this._page = page;
-            this.printElementCallback = printElementallback;
+            this.printElementCallback = printElementCallback;
             // Load fonts if not already loaded
             if (!this.hasBeenInitialized)
                 yield this.init(options);

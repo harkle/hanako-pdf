@@ -32,7 +32,7 @@ export type HanakoPDFOptions = {
   debug?: boolean;
 };
 
-export type PrintElementallback = (element: PDFElement, pageTop: number) => void
+export type PrintElementCallback = (element: PDFElement, pageTop: number) => void
 
 export class HanakoPDF {
   private static currentPageTop: number = 0;
@@ -43,7 +43,7 @@ export class HanakoPDF {
   private static jsPDF: jsPDF;
   private static pageFormat: string = 'A4';
   private static pageWidth: number = 0;
-  private static printElementCallback: PrintElementallback;
+  private static printElementCallback: PrintElementCallback;
   private static selector: string;
   private static _currentPage: number = 1;
   private static _debug: boolean;
@@ -103,9 +103,9 @@ export class HanakoPDF {
   /*
    * Export PDF
    */
-  public static async print(page: Collection, options: HanakoPDFOptions, target?: Collection, printElementallback?: PrintElementallback, jsPDFOptions?: jsPDFOptions) {
+  public static async print(page: Collection, options: HanakoPDFOptions, target?: Collection, printElementCallback?: PrintElementCallback, jsPDFOptions?: jsPDFOptions) {
     this._page = page;
-    this.printElementCallback = printElementallback;
+    this.printElementCallback = printElementCallback;
 
     // Load fonts if not already loaded
     if (!this.hasBeenInitialized) await this.init(options);
