@@ -207,7 +207,7 @@ export class HanakoPDF {
     static printElement(element) {
         // Draw background
         if (element.element.css('background-color') !== 'rgba(0, 0, 0, 0)')
-            PDFPrinter.rectangle(element.x, this._pageTop + element.y, element.width, element.height, element.element.css('background-color'), 0, element.element.css('background-color'));
+            PDFPrinter.rectangle(element.x, this.currentPageTop + element.y, element.width, element.height, element.element.css('background-color'), 0, element.element.css('background-color'));
         // Draw border
         ['border-top', 'border-right', 'border-bottom', 'border-left'].forEach((border) => {
             const borderData = element.element.css(border);
@@ -218,28 +218,28 @@ export class HanakoPDF {
                 x1: element.x,
                 y1: this._pageTop + element.y,
                 x2: element.x + element.width,
-                y2: this._pageTop + element.y
+                y2: this.currentPageTop + element.y
             };
             if (border === 'border-right') {
                 lineCoordinates.x1 = lineCoordinates.x2 = element.x + element.width;
-                lineCoordinates.y2 = this._pageTop + element.y + element.height;
+                lineCoordinates.y2 = this.currentPageTop + element.y + element.height;
             }
             if (border === 'border-bottom') {
-                lineCoordinates.y1 = lineCoordinates.y2 = this._pageTop + element.y + element.height;
+                lineCoordinates.y1 = lineCoordinates.y2 = this.currentPageTop + element.y + element.height;
             }
             if (border === 'border-left') {
                 lineCoordinates.x2 = lineCoordinates.x1;
-                lineCoordinates.y2 = this._pageTop + element.y + element.height;
+                lineCoordinates.y2 = this.currentPageTop + element.y + element.height;
             }
             if (borderSize > 0 && borderStyle != 'none')
                 PDFPrinter.line(lineCoordinates.x1, lineCoordinates.y1, lineCoordinates.x2, lineCoordinates.y2, borderColor, borderSize * this.scaleFactor);
         });
         // Draw image
         if (['CANVAS', 'IMG'].includes(element.element.get(0).tagName) || element.element.css('background-image') !== 'none')
-            PDFPrinter.image(element, element.x, this._pageTop + element.y);
+            PDFPrinter.image(element, element.x, this.currentPageTop + element.y);
         // Output text
         if (element.element.text() !== '' && element.element.find('.hp-export').length === 0)
-            PDFPrinter.text(element, element.x, this._pageTop + element.y);
+            PDFPrinter.text(element, element.x, this.currentPageTop + element.y);
     }
     /*
      * Add a new page
