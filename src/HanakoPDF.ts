@@ -30,6 +30,8 @@ export class HanakoPDF {
   private static _pageCount: number = 1;
   private static _currentPage: number = 1;
   private static _page: Collection;
+  private static pageFormat: string = 'A4';
+  private static pageWidth: number = 0;
   private static _pageTop: number = 0;
   private static _pageBottom: number = 0;
   private static _pageNumberPosition: PageNumberPosition;
@@ -63,9 +65,6 @@ export class HanakoPDF {
 
     // Retrieve display mode
     this.displayMode = this.getPageDataAttribute('displayMode', 'fullheight');
-
-    // Retrieve font scale factor
-    this._fontScaleFactor = parseFloat(this.getPageDataAttribute('fontScaleFactor', '1.5'));
 
     // Retrieve page number position
     this._pageNumberPosition = {
@@ -103,14 +102,18 @@ export class HanakoPDF {
     if (!this.hasBeenInitialized) return false;
 
     // Initialize jsPDF
-    this.jsPDF = new jsPDF({
+    const options: jsPDFOptions = {
       ...{
         orientation: 'portrait',
         unit: 'cm',
         format: 'A4'
       },
       ...jsPDFOptions
-    });
+    };
+    this.jsPDF = new jsPDF(options);
+
+    // Save page format
+    this.pageFormat = <string>options.format;
 
     // Set display mode
     this.jsPDF.setDisplayMode(this.displayMode);
@@ -180,7 +183,12 @@ export class HanakoPDF {
    * Get scale factor
    */
   public static get scaleFactor() {
-    if (!this._scaleFactor) this._scaleFactor = 21 / this.page.width();
+    if (!this._scaleFactor || this.pageWidth === this.page.width()) {
+      const withCentimeters = this.pageFormat == 'A4' ? 21 : 29.7;
+      this.pageWidth = this.page.width();
+      this._fontScaleFactor = null;
+      this._scaleFactor = withCentimeters / this.page.width();
+    }
 
     return this._scaleFactor;
   }
@@ -224,6 +232,11 @@ export class HanakoPDF {
    * Get page number parameters
    */
   public static get fontScaleFactor() {
+    if (!this._fontScaleFactor || this.pageWidth === this.page.width()) {
+      this.pageWidth = this.page.width();
+      this._fontScaleFactor = 0.03528 / this.scaleFactor;
+    }
+    
     return this._fontScaleFactor;
   }
 

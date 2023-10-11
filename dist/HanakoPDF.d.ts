@@ -16,6 +16,8 @@ export declare class HanakoPDF {
     private static _pageCount;
     private static _currentPage;
     private static _page;
+    private static pageFormat;
+    private static pageWidth;
     private static _pageTop;
     private static _pageBottom;
     private static _pageNumberPosition;

@@ -11,33 +11,31 @@
   <script src="dist/site-bundle.js"></script>
 </head>
 <body>
-  <div class="container">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-12 mb-5">
+      <div class="col-12 my-5">
         <h1 class="mb-4">Hanako PDF Demo</h1>
         <a href="#" id="btn-iframe-pdf" class="btn btn-outline-primary mb-3">PDF to iFrame</a>
         <a href="#" id="btn-export-pdf" class="btn btn-outline-primary mb-3">Download PDF</a>
       </div>
       <div class="col-6">
         <h2 class="mb-4">HTML Page</h2>
-        <div class="pdf border p-5 mb-5" data-font-scale-factor="2.2" data-display-mode="fullheight" data-page-top="2" data-page-bottom="27.7" data-output="#iframe" data-debug="true" data-font-path="fonts" data-filename="TestFile">
+        <div class="pdf border p-5 mb-5" data-font-scale-factor="1.65" data-display-mode="fullheight" data-page-top="2" data-page-bottom="27.7" data-output="#iframe" data-debug="true" data-font-path="fonts" data-filename="TestFile">
           <h1 class="hp-export fw-normal">Document title</h1>
-          <p class="hp-export">
-            <strong>Lorem ipsum</strong> dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.
-          </p>
-          <p class="hp-export p-4 border fw-normal">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</h1>
-          <p class="hp-export" style="line-height: 50px">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</p>
-          <p class="hp-export fw-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</p>
-          <p class="hp-export text-uppercase">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</p>
-          <p class="hp-export fst-italic">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</p>
-          <p class="hp-export text-success">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</p>
+          <p class="hp-export">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt.</p>
+          <p class="hp-export p-4 border fw-normal">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt.</h1>
+          <p class="hp-export" style="line-height: 50px">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt.</p>
+          <p class="hp-export fw-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt.</p>
+          <p class="hp-export text-uppercase">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt.</p>
+          <p class="hp-export fst-italic">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt.</p>
+          <p class="hp-export text-success">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt.</p>
           <div class="hp-export hp-page-break"></div>
           <div class="row my-5">
             <div class="col-6">
               <h3 class="fw-normal hp-export">JPG</h3>
               <img src="medias/test.jpg" alt="" class="w-100 hp-export">
             </div>
-            <div class="col-6 mt-4"">
+            <div class="col-6">
               <h3 class="fw-normal hp-export">JPG (external)</h3>
               <img src="https://kanakosawada.com/wp-content/uploads/2020/04/190127-vuegenerale-scaled-1-1600x0-c-default.jpg" alt="" class="w-100 hp-export">
             </div>
@@ -49,7 +47,7 @@
               <h3 class="fw-normal hp-export">SVG</h3>
               <img src="medias/test.svg" alt="" class="w-100 bg-white hp-export">
             </div>
-            <div class="col-12 mt-4">
+            <div class="hp-group col-12 mt-4">
               <h3 class="fw-normal hp-export">Canvas</h3>
               <div class="ratio ratio-4x3">
                 <canvas id="canvas" class="w-100 hp-export"></canvas>

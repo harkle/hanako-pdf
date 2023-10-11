@@ -1,3 +1,20 @@
 .pdf {
   font-family: 'DM Sans', sans-serif;
 }
+
+.pdf h1 {
+  font-size: 40px;
+}
+
+.pdf h2 {
+  font-size: 35px;
+}
+
+.pdf h3 {
+  font-size: 30px;
+}
+
+.pdf,
+.pdf p {
+  font-size: 16px;
+}

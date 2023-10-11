@@ -105,11 +105,11 @@ export class PDFPrinter {
     
     const format = src.split('.').pop() === 'jpg' ? 'jpeg' : 'png';
 
-    if (src.indexOf(location.hostname) === -1 && !isCanvas) {
-      console.log('external image skipped')
-    } else {
+    try {
       const image = isCanvas ? element.element.get(0) : this.imageToCanvas(element);
       this.jsPDF.addImage(image, format, x, y, element.element.width() * HanakoPDF.scaleFactor, element.element.height() * HanakoPDF.scaleFactor);
+    } catch (e) {
+      console.error('Failed to add image to PDF: ' + src);
     }
   }
 

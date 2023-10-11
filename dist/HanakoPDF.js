@@ -23,8 +23,6 @@ export class HanakoPDF {
         this._pageBottom = parseFloat(this.getPageDataAttribute('pageBottom', '29.7'));
         // Retrieve display mode
         this.displayMode = this.getPageDataAttribute('displayMode', 'fullheight');
-        // Retrieve font scale factor
-        this._fontScaleFactor = parseFloat(this.getPageDataAttribute('fontScaleFactor', '1.5'));
         // Retrieve page number position
         this._pageNumberPosition = {
             x: parseFloat(this.getPageDataAttribute('pageNumberX', '10.5')),
@@ -56,14 +54,17 @@ export class HanakoPDF {
         if (!this.hasBeenInitialized)
             return false;
         // Initialize jsPDF
-        this.jsPDF = new jsPDF({
+        const options = {
             ...{
                 orientation: 'portrait',
                 unit: 'cm',
                 format: 'A4'
             },
             ...jsPDFOptions
-        });
+        };
+        this.jsPDF = new jsPDF(options);
+        // Save page format
+        this.pageFormat = options.format;
         // Set display mode
         this.jsPDF.setDisplayMode(this.displayMode);
         // Add fonts to VFS
@@ -120,8 +121,12 @@ export class HanakoPDF {
      * Get scale factor
      */
     static get scaleFactor() {
-        if (!this._scaleFactor)
-            this._scaleFactor = 21 / this.page.width();
+        if (!this._scaleFactor || this.pageWidth === this.page.width()) {
+            const withCentimeters = this.pageFormat == 'A4' ? 21 : 29.7;
+            this.pageWidth = this.page.width();
+            this._fontScaleFactor = null;
+            this._scaleFactor = withCentimeters / this.page.width();
+        }
         return this._scaleFactor;
     }
     /*
@@ -158,6 +163,10 @@ export class HanakoPDF {
      * Get page number parameters
      */
     static get fontScaleFactor() {
+        if (!this._fontScaleFactor || this.pageWidth === this.page.width()) {
+            this.pageWidth = this.page.width();
+            this._fontScaleFactor = 0.03528 / this.scaleFactor;
+        }
         return this._fontScaleFactor;
     }
     /*
@@ -240,6 +249,8 @@ HanakoPDF._debug = false;
 HanakoPDF.fonts = {};
 HanakoPDF._pageCount = 1;
 HanakoPDF._currentPage = 1;
+HanakoPDF.pageFormat = 'A4';
+HanakoPDF.pageWidth = 0;
 HanakoPDF._pageTop = 0;
 HanakoPDF._pageBottom = 0;
 HanakoPDF._fontScaleFactor = 1.5;

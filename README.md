@@ -32,6 +32,6 @@ These features are not support because they are causing issues with the PDF rend
 - strong, em, etc. nested inside elements
 
 ## Todo
-- npm package, etc.
+- options to ts
 - callback system for special elements rendering
 - page numbering format
