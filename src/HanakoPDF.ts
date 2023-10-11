@@ -74,7 +74,7 @@ export class HanakoPDF {
     this._pageBottom = options.pageBottom ? options.pageBottom : 29.7;
     this.displayMode = options.displayMode ? options.displayMode :'fullheight';
     this._pageNumberOptions =  options.pageNumberOptions ? options.pageNumberOptions : {
-      format: ' {current} / {total}',
+      format: '{current} / {total}',
       x: 10.5,
       y: 28.5,
       align: 'center'
