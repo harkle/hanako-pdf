@@ -34,6 +34,7 @@ export class HanakoPDF {
                 y: 28.5,
                 align: 'center'
             };
+            this._fontScaleFactorFix = options.fontScaleFactorFix ? options.fontScaleFactorFix : 1;
             this._debug = options.debug ? options.debug : false;
             // Load fonts
             const fontConfigs = yield $.httpRequest({
@@ -165,7 +166,7 @@ export class HanakoPDF {
     static get fontScaleFactor() {
         if (!this._fontScaleFactor || this.pageWidth === this.page.width()) {
             this.pageWidth = this.page.width();
-            this._fontScaleFactor = 0.03528 / this.scaleFactor;
+            this._fontScaleFactor = 0.03528 / this.scaleFactor / this._fontScaleFactorFix;
         }
         return this._fontScaleFactor;
     }
@@ -249,7 +250,6 @@ HanakoPDF.hasBeenInitialized = false;
 HanakoPDF.pageFormat = 'A4';
 HanakoPDF.pageWidth = 0;
 HanakoPDF._currentPage = 1;
-HanakoPDF._fontScaleFactor = 1.5;
 HanakoPDF._pageCount = 1;
 HanakoPDF._pageBottom = 0;
 HanakoPDF._pageTop = 0;

@@ -14,6 +14,7 @@ export declare type HanakoPDFOptions = {
     pageBottom?: number;
     displayMode?: string;
     pageNumberOptions?: PageNumberOptions;
+    fontScaleFactorFix?: number;
     debug?: boolean;
 };
 export declare class HanakoPDF {
@@ -29,6 +30,7 @@ export declare class HanakoPDF {
     private static _currentPage;
     private static _debug;
     private static _fontScaleFactor;
+    private static _fontScaleFactorFix;
     private static _page;
     private static _pageCount;
     private static _pageBottom;

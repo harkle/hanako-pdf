@@ -28,6 +28,7 @@ export type HanakoPDFOptions = {
   pageBottom?: number;
   displayMode?: string;
   pageNumberOptions?: PageNumberOptions;
+  fontScaleFactorFix?: number;
   debug?: boolean;
 };
 
@@ -43,7 +44,8 @@ export class HanakoPDF {
   private static selector: string;
   private static _currentPage: number = 1;
   private static _debug: boolean;
-  private static _fontScaleFactor: number = 1.5;
+  private static _fontScaleFactor: number;
+  private static _fontScaleFactorFix: number;
   private static _page: Collection;
   private static _pageCount: number = 1;
   private static _pageBottom: number = 0;
@@ -74,6 +76,7 @@ export class HanakoPDF {
       y: 28.5,
       align: 'center'
     };
+    this._fontScaleFactorFix = options.fontScaleFactorFix ? options.fontScaleFactorFix : 1;
     this._debug = options.debug ? options.debug : false;
 
     // Load fonts
@@ -230,7 +233,7 @@ export class HanakoPDF {
   public static get fontScaleFactor() {
     if (!this._fontScaleFactor || this.pageWidth === this.page.width()) {
       this.pageWidth = this.page.width();
-      this._fontScaleFactor = 0.03528 / this.scaleFactor;
+      this._fontScaleFactor = 0.03528 / this.scaleFactor / this._fontScaleFactorFix;
     }
     
     return this._fontScaleFactor;

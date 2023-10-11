@@ -17,6 +17,7 @@ export class Demo extends Component {
         fontPath: 'fonts',
         pageTop: 2,
         pageBottom: 27.7,
+        fontScaleFactorFix: .99,
         pageNumberOptions: {
           format: 'Page {page} of {pages}',
           x: 2,
