@@ -26,10 +26,12 @@ https://www.giftofspeed.com/base64-encoder/
 These features are not support because they are causing issues with the PDF rendering.
 
 - letter spacing
-
+- background images
+- external images
+- sup, sub
+- strong, em, etc. nested inside elements
 
 ## Todo
-- ul
-- ol
-- nested styles (em, strong, sup, etc.)
+- npm package, etc.
+- callback system for special elements rendering
 - page numbering format

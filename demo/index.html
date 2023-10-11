@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,700&display=swap"rel="stylesheet" />
+  <link href="style.css" rel="stylesheet" />
+  <script src="dist/site-bundle.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 mb-5">
+        <h1 class="mb-4">Hanako PDF Demo</h1>
+        <a href="#" id="btn-iframe-pdf" class="btn btn-outline-primary mb-3">PDF to iFrame</a>
+        <a href="#" id="btn-export-pdf" class="btn btn-outline-primary mb-3">Download PDF</a>
+      </div>
+      <div class="col-6">
+        <h2 class="mb-4">HTML Page</h2>
+        <div class="pdf border p-5 mb-5" data-font-scale-factor="2.2" data-display-mode="fullheight" data-page-top="2" data-page-bottom="27.7" data-output="#iframe" data-debug="true" data-font-path="fonts" data-filename="TestFile">
+          <h1 class="hp-export fw-normal">Document title</h1>
+          <p class="hp-export">
+            <strong>Lorem ipsum</strong> dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.
+          </p>
+          <p class="hp-export p-4 border fw-normal">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</h1>
+          <p class="hp-export" style="line-height: 50px">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</p>
+          <p class="hp-export fw-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</p>
+          <p class="hp-export text-uppercase">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</p>
+          <p class="hp-export fst-italic">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</p>
+          <p class="hp-export text-success">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, laborum perspiciatis voluptatem magni laudantium a eligendi aperiam nesciunt. Modi quas dolor soluta in ipsam. Veritatis sit assumenda animi fugiat quidem.</p>
+          <div class="hp-export hp-page-break"></div>
+          <div class="row my-5">
+            <div class="col-6">
+              <h3 class="fw-normal hp-export">JPG</h3>
+              <img src="medias/test.jpg" alt="" class="w-100 hp-export">
+            </div>
+            <div class="col-6 mt-4"">
+              <h3 class="fw-normal hp-export">JPG (external)</h3>
+              <img src="https://kanakosawada.com/wp-content/uploads/2020/04/190127-vuegenerale-scaled-1-1600x0-c-default.jpg" alt="" class="w-100 hp-export">
+            </div>
+            <div class="col-6 mt-4"">
+              <h3 class="fw-normal hp-export">PNG</h3>
+              <img src="medias/test.png" alt="" class="w-100 hp-export">
+            </div>
+            <div class="col-6 mt-4">
+              <h3 class="fw-normal hp-export">SVG</h3>
+              <img src="medias/test.svg" alt="" class="w-100 bg-white hp-export">
+            </div>
+            <div class="col-12 mt-4">
+              <h3 class="fw-normal hp-export">Canvas</h3>
+              <div class="ratio ratio-4x3">
+                <canvas id="canvas" class="w-100 hp-export"></canvas>
+              </div>
+              <script>
+                const canvas = document.getElementById('canvas');
+                canvas.width = canvas.getBoundingClientRect().width * 2;
+                canvas.height = canvas.getBoundingClientRect().height * 2;;
+                const ctx = canvas.getContext('2d');
+
+                ctx.scale(2, 2);
+
+                ctx.fillStyle = 'rgb(255, 255, 255)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // draw a clock
+                ctx.translate(75, 75);
+                ctx.scale(0.4, 0.4);
+                ctx.rotate(-Math.PI / 2);
+                ctx.strokeStyle = 'black';
+                ctx.fillStyle = 'white';
+                ctx.lineWidth = 8;
+                ctx.lineCap = 'round';
+
+                // Hour marks
+                ctx.save();
+                for (let i = 0; i < 12; i++) {
+                  ctx.beginPath();
+                  ctx.rotate(Math.PI / 6);
+                  ctx.moveTo(100, 0);
+                  ctx.lineTo(120, 0);
+                  ctx.stroke();
+                }
+                ctx.restore();
+
+                // Minute marks
+                ctx.save();
+                ctx.lineWidth = 5;
+                for (let i = 0; i < 60; i++) {
+                  if (i % 5 != 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(117, 0);
+                    ctx.lineTo(120, 0);
+                    ctx.stroke();
+                  }
+                  ctx.rotate(Math.PI / 30);
+                }
+                ctx.restore();
+
+                const date = new Date();
+                const hour = date.getHours();
+                const minute = date.getMinutes();
+                const second = date.getSeconds();
+
+                // write Hours
+                ctx.save();
+                ctx.rotate(hour * (Math.PI / 6) + (Math.PI / 360) * minute + (Math.PI / 21600) * second);
+                ctx.lineWidth = 14;
+                ctx.beginPath();
+                ctx.moveTo(-20, 0);
+                ctx.lineTo(80, 0);
+                ctx.stroke();
+                ctx.restore();
+
+                // write Minutes
+                ctx.save();
+                ctx.rotate((Math.PI / 30) * minute + (Math.PI / 1800) * second);
+                ctx.lineWidth = 10;
+                ctx.beginPath();
+                ctx.moveTo(-28, 0);
+                ctx.lineTo(112, 0);
+                ctx.stroke();
+                ctx.restore();
+
+                // Write seconds
+                ctx.save();
+                ctx.rotate(second * Math.PI / 30);
+                ctx.strokeStyle = '#D40000';
+                ctx.fillStyle = '#D40000';
+                ctx.lineWidth = 6;
+                ctx.beginPath();
+                ctx.moveTo(-30, 0);
+                ctx.lineTo(83, 0);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(0, 0, 10, 0, Math.PI * 2, true);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(95, 0, 10, 0, Math.PI * 2, true);
+                ctx.stroke();
+                ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+                ctx.arc(0, 0, 3, 0, Math.PI * 2, true);
+                ctx.fill();
+                ctx.restore();
+              </script>
+            </div>
+          </div>
+          <div class="hp-export hp-page-break"></div>
+          <div class="hp-group hp-export d-flex flex-column justify-content-between border bg-secondary p-5 mb-5"
+            style="height:350px">
+            <h2 class="hp-export fw-normal text-primary">Group start</h2>
+            <h2 class="hp-export fw-normal">Group end</h2>
+          </div>
+          <div class="hp-group hp-export d-flex flex-column justify-content-between border bg-secondary p-5 mb-5"
+            style="height:350px">
+            <h2 class="hp-export fw-normal text-primary">Group start</h2>
+            <h2 class="hp-export fw-normal">Group end</h2>
+          </div>
+          <div class="hp-group hp-export d-flex flex-column justify-content-between border bg-secondary p-5 mb-5"
+            style="height:350px">
+            <h2 class="hp-export fw-normal text-primary">Group start</h2>
+            <h2 class="hp-export fw-normal">Group end</h2>
+          </div>
+          <div class="hp-group hp-export d-flex flex-column justify-content-between border bg-secondary p-5 mb-5"
+            style="height:350px">
+            <h2 class="hp-export fw-normal text-primary">Group start</h2>
+            <h2 class="hp-export fw-normal">Group end</h2>
+          </div>
+          <div class="hp-group hp-export d-flex flex-column justify-content-between border bg-secondary p-5 mb-5"
+            style="height:350px">
+            <h2 class="hp-export fw-normal text-primary">Group start</h2>
+            <h2 class="hp-export fw-normal">Group end</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <h2 class="mb-4">Iframe</h2>
+        <iframe id="iframe" class="w-100 mx-auto border" style="height: 100vh;"></iframe>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

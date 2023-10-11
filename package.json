@@ -1,0 +1,38 @@
+{
+  "name": "hanako-ts",
+  "version": "1.2.7",
+  "description": "Web quick and dirty framework to manage everyday frontend web development challenges.",
+  "homepage": "https://github.com/harkle/hanako-ts",
+  "bugs": {
+    "url": "https://github.com/harkle/hanako-ts/issues"
+  },
+  "files": [
+    "dist/*",
+    "dist-legacy/*"
+  ],
+  "devDependencies": {
+    "@types/node": "^14.14.37",
+    "eslint": "^7.21.0",
+    "path": "^0.12.7",
+    "ts-loader": "^8.0.17",
+    "ts-node": "^9.1.1",
+    "typedoc": "^0.22.13",
+    "typescript": "^4.2.3",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.6.0"
+  },
+  "scripts": {
+    "webpack": "webpack --config webpack.config.js",
+    "build": "tsc --project tsconfig.npm.es2015.json && tsc --project tsconfig.npm.es2020.json"
+  },
+  "author": {
+    "name": "Lionel Tardy",
+    "email": "mail@lionel.me",
+    "url": "https://github.com/harkle"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "hanako-ts": "^1.2.7",
+    "jspdf": "^2.5.1"
+  }
+}

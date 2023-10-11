@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "lib": ["es2020", "dom"],
+    "types": ["node"],
+    "declaration": true,
+    "outDir": "dist",
+    "rootDir": "src",
+  },
+  "exclude": [
+    "demo",
+    "dist",
+    "node_modules",
+    "src/**/*.spec.ts"
+  ],
+  "include": [
+    "src"
+  ]
+}

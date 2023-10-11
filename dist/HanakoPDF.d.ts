@@ -1,0 +1,41 @@
+import { Collection } from "hanako-ts/dist-legacy/Collection";
+import { jsPDFOptions } from 'jspdf';
+declare type PageNumberPosition = {
+    x: number;
+    y: number;
+    align: string;
+};
+export declare class HanakoPDF {
+    private static hasBeenInitialized;
+    private static currentPageTop;
+    private static _debug;
+    private static displayMode;
+    private static fonts;
+    private static jsPDF;
+    private static outputElement;
+    private static _pageCount;
+    private static _currentPage;
+    private static _page;
+    private static _pageTop;
+    private static _pageBottom;
+    private static _pageNumberPosition;
+    private static _scaleFactor;
+    private static _fontScaleFactor;
+    private static _yReference;
+    static init(): Promise<boolean>;
+    static print(page: Collection, jsPDFOptions?: jsPDFOptions): Promise<boolean>;
+    private static getPageDataAttribute;
+    static get debug(): boolean;
+    static get page(): Collection;
+    static get scaleFactor(): number;
+    static get yReference(): number;
+    static get pageBottom(): number;
+    static get currentPage(): number;
+    static get pageCount(): number;
+    static get pageNumberPosition(): PageNumberPosition;
+    static get fontScaleFactor(): number;
+    private static transverse;
+    private static printElement;
+    private static pageBreak;
+}
+export {};

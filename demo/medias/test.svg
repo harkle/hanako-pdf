@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.9.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="524.9px" height="512.7px" viewBox="0 0 524.9 512.7" style="enable-background:new 0 0 524.9 512.7;" xml:space="preserve"
+	>
+<style type="text/css">
+	.st0{fill:url(#SVGID_1_);}
+	.st1{fill:#0000FF;}
+	.st2{fill:url(#SVGID_00000171688266727715674990000007144942851321452967_);}
+</style>
+<g>
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="39.56" y1="237.8774" x2="512.5776" y2="237.8774">
+		<stop  offset="0" style="stop-color:#FF7BAC"/>
+		<stop  offset="1" style="stop-color:#FF7BAC;stop-opacity:0"/>
+	</linearGradient>
+	<polygon class="st0" points="276.1,356.6 129.9,462.8 185.7,291 39.6,184.8 220.2,184.8 276.1,12.9 331.9,184.8 512.6,184.8 
+		366.4,291 422.2,462.8 	"/>
+	<path class="st1" d="M276.1,25.9l51.1,157.4l1.8,5.5h5.8h165.5L366.4,286l-4.7,3.4l1.8,5.5l51.1,157.4l-133.9-97.3l-4.7-3.4
+		l-4.7,3.4l-133.9,97.3L188.6,295l1.8-5.5l-4.7-3.4L51.9,188.8h165.5h5.8l1.8-5.5L276.1,25.9 M276.1,0l-58.7,180.8H27.2L181,292.5
+		l-58.7,180.8l153.8-111.7l153.8,111.7l-58.7-180.8l153.8-111.7H334.8L276.1,0L276.1,0z"/>
+</g>
+<g>
+	
+		<linearGradient id="SVGID_00000028286164874867586660000009258189703776455058_" gradientUnits="userSpaceOnUse" x1="12.7851" y1="266.3281" x2="479.979" y2="266.3281">
+		<stop  offset="0" style="stop-color:#CCE0F4"/>
+		<stop  offset="6.405089e-02" style="stop-color:#C3DCF2"/>
+		<stop  offset="0.1706" style="stop-color:#A9D2EE"/>
+		<stop  offset="0.3066" style="stop-color:#80C2E7"/>
+		<stop  offset="0.4649" style="stop-color:#47ACDE"/>
+		<stop  offset="0.5674" style="stop-color:#1E9CD7"/>
+		<stop  offset="0.8652" style="stop-color:#0075BE"/>
+		<stop  offset="0.9944" style="stop-color:#005B97"/>
+	</linearGradient>
+	<polygon style="fill:url(#SVGID_00000028286164874867586660000009258189703776455058_);" points="191.2,321.5 12.8,293.2 
+		173.8,211.2 145.5,32.7 273.3,160.5 434.2,78.5 352.2,239.4 480,367.2 301.5,338.9 219.5,499.9 	"/>
+	<path class="st1" d="M151.4,44.3l117,117l4.1,4.1l5.2-2.6l147.4-75.1L350,235l-2.6,5.2l4.1,4.1l117,117L305,335.4l-5.7-0.9
+		l-2.6,5.2l-75.1,147.4l-25.9-163.4l-0.9-5.7l-5.7-0.9L25.6,291.2L173,216.1l5.2-2.6l-0.9-5.7L151.4,44.3 M139.6,21.2l29.7,187.7
+		L0,295.2L187.7,325l29.7,187.7l86.3-169.4l187.7,29.7L357.1,238.7l86.3-169.4L274,155.6L139.6,21.2L139.6,21.2z"/>
+</g>
+</svg>
