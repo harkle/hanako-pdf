@@ -14,7 +14,8 @@ export class PDFPrinter {
             pageNumberElement = $.parseHTML('<div class="hp-page-number d-none"></div>');
             HanakoPDF.page.append(pageNumberElement);
         }
-        PDFPrinter.text(new PDFElement(pageNumberElement), HanakoPDF.pageNumberPosition.x, HanakoPDF.pageNumberPosition.y, HanakoPDF.currentPage + '/' + HanakoPDF.pageCount, HanakoPDF.pageNumberPosition.align);
+        const pageNumberText = HanakoPDF.pageNumberOptions.format.replace('{page}', HanakoPDF.currentPage.toString()).replace('{pages}', HanakoPDF.pageCount.toString());
+        PDFPrinter.text(new PDFElement(pageNumberElement), HanakoPDF.pageNumberOptions.x, HanakoPDF.pageNumberOptions.y, pageNumberText, HanakoPDF.pageNumberOptions.align);
     }
     /*
      * Draw a text

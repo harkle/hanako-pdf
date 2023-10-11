@@ -13,75 +13,78 @@ type Fonts = {
   [key: string]: string;
 };
 
-type PageNumberPosition = {
+export type PageNumberOptions = {
+  format: string;
   x: number;
   y: number;
   align: string;
 };
 
+export type HanakoPDFOptions = {
+  fontPath: string;
+  selector?: string;
+  filename?: string;
+  pageTop?: number;
+  pageBottom?: number;
+  displayMode?: string;
+  pageNumberOptions?: PageNumberOptions;
+  debug?: boolean;
+};
+
 export class HanakoPDF {
-  private static hasBeenInitialized: boolean = false;
   private static currentPageTop: number = 0;
-  private static _debug: boolean = false;
   private static displayMode: string;
+  private static filename: string;
   private static fonts: Fonts = {};
+  private static hasBeenInitialized: boolean = false;
   private static jsPDF: jsPDF;
-  private static outputElement: Collection;
-  private static _pageCount: number = 1;
-  private static _currentPage: number = 1;
-  private static _page: Collection;
   private static pageFormat: string = 'A4';
   private static pageWidth: number = 0;
-  private static _pageTop: number = 0;
-  private static _pageBottom: number = 0;
-  private static _pageNumberPosition: PageNumberPosition;
-  private static _scaleFactor: number;
+  private static selector: string;
+  private static _currentPage: number = 1;
+  private static _debug: boolean;
   private static _fontScaleFactor: number = 1.5;
+  private static _page: Collection;
+  private static _pageCount: number = 1;
+  private static _pageBottom: number = 0;
+  private static _pageTop: number = 0;
+  private static _pageNumberOptions: PageNumberOptions;
+  private static _scaleFactor: number;
   private static _yReference: number = 0;
 
   /*
    * Init & load fonts from server
    */
-  public static async init() {
-    let fontPath = this.getPageDataAttribute('fontPath');
-
+  public static async init(options: HanakoPDFOptions) {
     // Output an error if path is empty
-    if (fontPath === '' || fontPath === undefined) {
+    if (options.fontPath === '' || options.fontPath === undefined) {
       console.error('hanako-pdf: path is empty');
       return false;
     }
 
-    // Retrieve debug mode
-    this._debug = this.getPageDataAttribute('debug') === 'true';
-
-    // Retrieve output element
-    this.outputElement = $(this.getPageDataAttribute('output'));
-
-    // Retrieve page top
-    this._pageTop = parseFloat(this.getPageDataAttribute('pageTop', '0'));
-
-    // Retrieve page bottom
-    this._pageBottom = parseFloat(this.getPageDataAttribute('pageBottom', '29.7'));
-
-    // Retrieve display mode
-    this.displayMode = this.getPageDataAttribute('displayMode', 'fullheight');
-
-    // Retrieve page number position
-    this._pageNumberPosition = {
-      x: parseFloat(this.getPageDataAttribute('pageNumberX', '10.5')),
-      y: parseFloat(this.getPageDataAttribute('pageNumberY', '28.5')),
-      align: this.getPageDataAttribute('pageNumberAlign', 'center')
+    // Retrive options
+    this.selector = options.selector ? options.selector : '.hp-export';
+    this.filename = options.filename ? options.filename : 'please_set_a_filename';
+    this._pageTop = options.pageTop ? options.pageTop : 0;
+    this._pageBottom = options.pageBottom ? options.pageBottom : 29.7;
+    this.displayMode = options.displayMode ? options.displayMode :'fullheight';
+    this._pageNumberOptions =  options.pageNumberOptions ? options.pageNumberOptions : {
+      format: ' {current} / {total}',
+      x: 10.5,
+      y: 28.5,
+      align: 'center'
     };
+    this._debug = options.debug ? options.debug : false;
 
     // Load fonts
     const fontConfigs: FontConfig[] = await $.httpRequest({
-      url: fontPath + '/fonts.json',
+      url: options.fontPath + '/fonts.json',
       dataType: 'json'
     });
 
     await Promise.all(fontConfigs.map(async (fontConfig: FontConfig, index: number) => {
       const fontData: string = await $.httpRequest({
-        url: fontPath + '/' + fontConfig.file,
+        url: options.fontPath + '/' + fontConfig.file,
         dataType: 'text'
       });
 
@@ -94,15 +97,15 @@ export class HanakoPDF {
   /*
    * Export PDF
    */
-  public static async print(page: Collection, jsPDFOptions?: jsPDFOptions) {
+  public static async print(page: Collection, options: HanakoPDFOptions, target?: Collection, jsPDFOptions?: jsPDFOptions) {
     this._page = page;
 
     // Load fonts if not already loaded
-    if (!this.hasBeenInitialized) await this.init();
+    if (!this.hasBeenInitialized) await this.init(options);
     if (!this.hasBeenInitialized) return false;
 
     // Initialize jsPDF
-    const options: jsPDFOptions = {
+    const _jsPDFOptions: jsPDFOptions = {
       ...{
         orientation: 'portrait',
         unit: 'cm',
@@ -110,10 +113,10 @@ export class HanakoPDF {
       },
       ...jsPDFOptions
     };
-    this.jsPDF = new jsPDF(options);
+    this.jsPDF = new jsPDF(_jsPDFOptions);
 
     // Save page format
-    this.pageFormat = <string>options.format;
+    this.pageFormat = <string>_jsPDFOptions.format;
 
     // Set display mode
     this.jsPDF.setDisplayMode(this.displayMode);
@@ -151,18 +154,11 @@ export class HanakoPDF {
     page.removeClass('print');
 
     // Save the PDF
-    if (this.outputElement.length > 0) {
-      this.outputElement.attr('src', this.jsPDF.output('datauristring'));
+    if (target) {
+      target.attr('src', this.jsPDF.output('datauristring'));
     } else {
-      this.jsPDF.save((page.data('filename') ? page.data('filename') : 'please_set_a_filename') + '.pdf');
+      this.jsPDF.save(this.filename);
     }
-  }
-
-  /*
-   * Return page data attribute
-   */
-  private static getPageDataAttribute(key: string, defaultValue: string = undefined) {
-    return this.page.data(key) !== undefined ? this.page.data(key) : defaultValue;
   }
 
   /*
@@ -224,8 +220,8 @@ export class HanakoPDF {
   /*
    * Get page number parameters
    */
-  public static get pageNumberPosition() {
-    return this._pageNumberPosition;
+  public static get pageNumberOptions() {
+    return this._pageNumberOptions;
   }
 
   /*
@@ -249,7 +245,7 @@ export class HanakoPDF {
     this._yReference = 0;
     this._currentPage = 1;
 
-    this.page.find('.hp-export').each((element: Collection) => {
+    this.page.find(this.selector).each((element: Collection) => {
       const pdfElement = new PDFElement(element);
 
       // Check if element is below page limit
@@ -307,7 +303,7 @@ export class HanakoPDF {
     if (['CANVAS', 'IMG'].includes(element.element.get(0).tagName) || element.element.css('background-image') !== 'none') PDFPrinter.image(element, element.x, this.currentPageTop + element.y);
 
     // Output text
-    if (element.element.text() !== '' && element.element.find('.hp-export').length === 0) PDFPrinter.text(element, element.x, this.currentPageTop + element.y);
+    if (element.element.text() !== '' && element.element.find(this.selector).length === 0) PDFPrinter.text(element, element.x, this.currentPageTop + element.y);
   }
 
   /*

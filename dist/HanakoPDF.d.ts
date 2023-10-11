@@ -1,32 +1,43 @@
 import { Collection } from "hanako-ts/dist-legacy/Collection";
 import { jsPDFOptions } from 'jspdf';
-declare type PageNumberPosition = {
+export declare type PageNumberOptions = {
+    format: string;
     x: number;
     y: number;
     align: string;
 };
+export declare type HanakoPDFOptions = {
+    fontPath: string;
+    selector?: string;
+    filename?: string;
+    pageTop?: number;
+    pageBottom?: number;
+    displayMode?: string;
+    pageNumberOptions?: PageNumberOptions;
+    debug?: boolean;
+};
 export declare class HanakoPDF {
-    private static hasBeenInitialized;
     private static currentPageTop;
-    private static _debug;
     private static displayMode;
+    private static filename;
     private static fonts;
+    private static hasBeenInitialized;
     private static jsPDF;
-    private static outputElement;
-    private static _pageCount;
-    private static _currentPage;
-    private static _page;
     private static pageFormat;
     private static pageWidth;
-    private static _pageTop;
-    private static _pageBottom;
-    private static _pageNumberPosition;
-    private static _scaleFactor;
+    private static selector;
+    private static _currentPage;
+    private static _debug;
     private static _fontScaleFactor;
+    private static _page;
+    private static _pageCount;
+    private static _pageBottom;
+    private static _pageTop;
+    private static _pageNumberOptions;
+    private static _scaleFactor;
     private static _yReference;
-    static init(): Promise<boolean>;
-    static print(page: Collection, jsPDFOptions?: jsPDFOptions): Promise<boolean>;
-    private static getPageDataAttribute;
+    static init(options: HanakoPDFOptions): Promise<boolean>;
+    static print(page: Collection, options: HanakoPDFOptions, target?: Collection, jsPDFOptions?: jsPDFOptions): Promise<boolean>;
     static get debug(): boolean;
     static get page(): Collection;
     static get scaleFactor(): number;
@@ -34,10 +45,9 @@ export declare class HanakoPDF {
     static get pageBottom(): number;
     static get currentPage(): number;
     static get pageCount(): number;
-    static get pageNumberPosition(): PageNumberPosition;
+    static get pageNumberOptions(): PageNumberOptions;
     static get fontScaleFactor(): number;
     private static transverse;
     private static printElement;
     private static pageBreak;
 }
-export {};
