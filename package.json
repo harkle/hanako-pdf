@@ -1,7 +1,7 @@
 {
-  "name": "hanako-ts",
-  "version": "1.2.7",
-  "description": "Web quick and dirty framework to manage everyday frontend web development challenges.",
+  "name": "hanako-pdf",
+  "version": "1.0.0",
+  "description": "A simple HTML to PDF converter for Hanako TS using jsPDF.",
   "homepage": "https://github.com/harkle/hanako-ts",
   "bugs": {
     "url": "https://github.com/harkle/hanako-ts/issues"
@@ -27,7 +27,7 @@
   },
   "author": {
     "name": "Lionel Tardy",
-    "email": "mail@lionel.me",
+    "email": "lionel.tardy@me.com",
     "url": "https://github.com/harkle"
   },
   "license": "MIT",
