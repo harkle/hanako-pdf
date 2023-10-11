@@ -7,7 +7,6 @@ export class Demo extends Component {
     super('Demo', false);
   }
 
-
   public async init(): Promise<void> {
     await super.init();
 
