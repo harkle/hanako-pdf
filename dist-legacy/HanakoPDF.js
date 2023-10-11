@@ -206,7 +206,7 @@ export class HanakoPDF {
             const borderColor = borderData.substring(borderData.indexOf('rgb'), borderData.length);
             let lineCoordinates = {
                 x1: element.x,
-                y1: this._pageTop + element.y,
+                y1: this.currentPageTop + element.y,
                 x2: element.x + element.width,
                 y2: this.currentPageTop + element.y
             };
