@@ -43,8 +43,9 @@ export class HanakoPDF {
     /*
      * Export PDF
      */
-    static async print(page, options, target, jsPDFOptions) {
+    static async print(page, options, target, printElementallback, jsPDFOptions) {
         this._page = page;
+        this.printElementCallback = printElementallback;
         // Load fonts if not already loaded
         if (!this.hasBeenInitialized)
             await this.init(options);
@@ -221,6 +222,8 @@ export class HanakoPDF {
         // Output text
         if (element.element.text() !== '' && element.element.find(this.selector).length === 0)
             PDFPrinter.text(element, element.x, this.currentPageTop + element.y);
+        if (this.printElementCallback)
+            this.printElementCallback(element, this.currentPageTop);
     }
     /*
      * Add a new page

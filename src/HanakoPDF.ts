@@ -32,6 +32,8 @@ export type HanakoPDFOptions = {
   debug?: boolean;
 };
 
+export type PrintElementallback = (element: PDFElement, pageTop: number) => void
+
 export class HanakoPDF {
   private static currentPageTop: number = 0;
   private static displayMode: string;
@@ -41,6 +43,7 @@ export class HanakoPDF {
   private static jsPDF: jsPDF;
   private static pageFormat: string = 'A4';
   private static pageWidth: number = 0;
+  private static printElementCallback: PrintElementallback;
   private static selector: string;
   private static _currentPage: number = 1;
   private static _debug: boolean;
@@ -100,8 +103,9 @@ export class HanakoPDF {
   /*
    * Export PDF
    */
-  public static async print(page: Collection, options: HanakoPDFOptions, target?: Collection, jsPDFOptions?: jsPDFOptions) {
+  public static async print(page: Collection, options: HanakoPDFOptions, target?: Collection, printElementallback?: PrintElementallback, jsPDFOptions?: jsPDFOptions) {
     this._page = page;
+    this.printElementCallback = printElementallback;
 
     // Load fonts if not already loaded
     if (!this.hasBeenInitialized) await this.init(options);
@@ -295,8 +299,8 @@ export class HanakoPDF {
       }
 
       if (border === 'border-left') {
-          lineCoordinates.x2 = lineCoordinates.x1;
-          lineCoordinates.y2 = this.currentPageTop + element.y + element.height;
+        lineCoordinates.x2 = lineCoordinates.x1;
+        lineCoordinates.y2 = this.currentPageTop + element.y + element.height;
       }
 
       if (borderSize > 0 && borderStyle !=  'none') PDFPrinter.line(lineCoordinates.x1, lineCoordinates.y1, lineCoordinates.x2, lineCoordinates.y2, borderColor, borderSize * this.scaleFactor);
@@ -307,6 +311,8 @@ export class HanakoPDF {
 
     // Output text
     if (element.element.text() !== '' && element.element.find(this.selector).length === 0) PDFPrinter.text(element, element.x, this.currentPageTop + element.y);
+
+    if (this.printElementCallback) this.printElementCallback(element, this.currentPageTop);
   }
 
   /*

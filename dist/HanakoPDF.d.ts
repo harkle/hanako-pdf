@@ -1,5 +1,6 @@
 import { Collection } from "hanako-ts/dist-legacy/Collection";
 import { jsPDFOptions } from 'jspdf';
+import { PDFElement } from './PDFElement';
 export declare type PageNumberOptions = {
     format: string;
     x: number;
@@ -17,6 +18,7 @@ export declare type HanakoPDFOptions = {
     fontScaleFactorFix?: number;
     debug?: boolean;
 };
+export declare type PrintElementallback = (element: PDFElement, pageTop: number) => void;
 export declare class HanakoPDF {
     private static currentPageTop;
     private static displayMode;
@@ -26,6 +28,7 @@ export declare class HanakoPDF {
     private static jsPDF;
     private static pageFormat;
     private static pageWidth;
+    private static printElementCallback;
     private static selector;
     private static _currentPage;
     private static _debug;
@@ -39,7 +42,7 @@ export declare class HanakoPDF {
     private static _scaleFactor;
     private static _yReference;
     static init(options: HanakoPDFOptions): Promise<boolean>;
-    static print(page: Collection, options: HanakoPDFOptions, target?: Collection, jsPDFOptions?: jsPDFOptions): Promise<boolean>;
+    static print(page: Collection, options: HanakoPDFOptions, target?: Collection, printElementallback?: PrintElementallback, jsPDFOptions?: jsPDFOptions): Promise<boolean>;
     static get debug(): boolean;
     static get page(): Collection;
     static get scaleFactor(): number;

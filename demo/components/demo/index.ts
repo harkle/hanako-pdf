@@ -1,6 +1,8 @@
 import { $ } from 'hanako-ts/dist-legacy/Framework';
 import { Component } from 'hanako-ts/dist-legacy/Component';
 import { HanakoPDF } from '../../../dist-legacy/HanakoPDF';
+import { PDFElement } from '../../../dist-legacy/PDFElement';
+import { PDFPrinter } from '../../../dist-legacy/PDFPrinter';
 
 export class Demo extends Component {
   constructor() {
@@ -25,7 +27,12 @@ export class Demo extends Component {
           align: 'left'
         },
         debug: true
-      }, $('#pdf-iframe'));
+      }, $('#pdf-iframe'), (element: PDFElement, pageTop: number) => {
+        if (element.element.get(0).tagName === 'LI') {
+          const text = element.element.parent().get(0).tagName === 'OL' ? element.element.index() + 1 + '.' : '•';
+          PDFPrinter.text(element, element.x - .5, element.y, text, 'left');
+        }
+      });
     });
 
     $('#btn-export-pdf').on('click', (event: Event) => {

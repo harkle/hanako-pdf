@@ -30,6 +30,3 @@ These features are not support because they are causing issues with the PDF rend
 - external images
 - sup, sub
 - strong, em, etc. nested inside elements
-
-## Todo
-- callback system for special elements rendering
