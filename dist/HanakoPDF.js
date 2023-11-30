@@ -220,7 +220,6 @@ export class HanakoPDF {
         if (['CANVAS', 'IMG'].includes(element.element.get(0).tagName) || element.element.css('background-image') !== 'none')
             PDFPrinter.image(element, element.x, this.currentPageTop + element.y);
         // Link
-        console.log('pute', element.element.get(0).href);
         if (['A'].includes(element.element.get(0).tagName) && element.element.get(0).href.indexOf('https://') >= 0)
             PDFPrinter.link(element, element.x, this.currentPageTop + element.y);
         // Output text

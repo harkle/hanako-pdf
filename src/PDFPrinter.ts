@@ -120,8 +120,13 @@ export class PDFPrinter {
   public static link(element: PDFElement, x: number, y: number) {
     const link = element.element.attr('href');
 
-    this.jsPDF.setTextColor('#0000ff');
+    const fontColor = element.element.css('color');
+
+    this.jsPDF.setTextColor(fontColor);
     this.jsPDF.link(x, y, element.element.width() * HanakoPDF.scaleFactor, element.element.height() * HanakoPDF.scaleFactor, { url: link });
+    
+    const lineTop = y + parseFloat(element.element.css('font-size')) * 1.1 * HanakoPDF.scaleFactor;
+    PDFPrinter.line(x, lineTop, x + element.element.width() * HanakoPDF.scaleFactor, lineTop, fontColor);
   }
 
   /*
