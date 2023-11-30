@@ -93,6 +93,15 @@ export class PDFPrinter {
         }
     }
     /*
+     * Draw a link
+     */
+    static link(element, x, y) {
+        const link = element.element.attr('href');
+        this.jsPDF.setTextColor('#0000ff');
+        this.jsPDF.link(x, y, element.element.width() * HanakoPDF.scaleFactor, element.element.height() * HanakoPDF.scaleFactor, { url: link });
+        console.log('link');
+    }
+    /*
      * Background image to canvas
      */
     static backgroundImageToCanvas(element) {

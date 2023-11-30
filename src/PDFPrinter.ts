@@ -115,6 +115,16 @@ export class PDFPrinter {
   }
 
   /*
+   * Draw a link
+   */
+  public static link(element: PDFElement, x: number, y: number) {
+    const link = element.element.attr('href');
+
+    this.jsPDF.setTextColor('#0000ff');
+    this.jsPDF.link(x, y, element.element.width() * HanakoPDF.scaleFactor, element.element.height() * HanakoPDF.scaleFactor, { url: link });
+  }
+
+  /*
    * Background image to canvas
    */
   public static backgroundImageToCanvas(element: PDFElement): HTMLCanvasElement {
